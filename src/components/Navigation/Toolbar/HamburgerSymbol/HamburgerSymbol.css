@@ -1,0 +1,10 @@
+.HamburgerSymbol {
+  height: 100%;
+  padding: 5px;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+.HamburgerSymbol img {
+  height: 100%;
+}
