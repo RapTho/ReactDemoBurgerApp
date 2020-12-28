@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 import classes from './ContactData.css'
 import Button from '../../components/UI/Button/Button'
@@ -102,9 +103,6 @@ class ContactData extends Component {
         loading: false
     }
 
-    componentDidMount = () => {
-        this.setState({ingredients: this.props.ingredients, price: this.props.price})
-    }
 
     checkValidity = (value, rules) => {
         let isValid = true;
@@ -146,8 +144,8 @@ class ContactData extends Component {
 
         this.setState({loading: true})
         const order = {
-            ingredients: this.state.ingredients,
-            price: +this.state.price.toFixed(2),
+            ingredients: this.props.ingredients,
+            price: +this.props.price.toFixed(2),
             contact: formData
         };
 
@@ -214,4 +212,11 @@ class ContactData extends Component {
     }
 };
 
-export default ContactData;
+const MapStateToProps = state => {
+    return {
+        ingredients: state.ingredients,
+        price: state.totalPrice
+    }
+}
+
+export default connect(MapStateToProps)(ContactData);
