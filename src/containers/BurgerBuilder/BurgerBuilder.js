@@ -9,19 +9,15 @@ import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 import Modal from '../../components/UI/Modal/Modal';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import axios from '../../axios-burger';
-import * as actionType from '../../store/actions';
+import * as actions from '../../store/actions/index';
 
 class BurgerBuilder extends Component {
     state = {
-        purchasing: false,
-        loading: false,
-        error: false
+        purchasing: false
     }
 
     componentDidMount () {
-        axios.get('https://react-burger-builder-4a2cc-default-rtdb.europe-west1.firebasedatabase.app/ingredients.json')
-            .then(response => this.setState({ingredients: response.data}))
-            .catch((error) => {this.setState({error})});
+        this.props.initIngredients();
     }
 
     updatePurchasableHandler = () => {
@@ -51,7 +47,7 @@ class BurgerBuilder extends Component {
             disabledInfo[key] = disabledInfo[key] <= 0
         };
 
-        let burger = this.state.error ? <p>Failed to load ingredients</p> : <Spinner />
+        let burger = this.props.error ? <p>Failed to load ingredients</p> : <Spinner />
         let orderSummary = <Spinner />
         if (this.props.ingredients) {
             burger = (
@@ -90,14 +86,16 @@ class BurgerBuilder extends Component {
 const MapStateToProps = state => {
     return {
         ingredients: state.ingredients,
-        totalPrice: state.totalPrice
+        totalPrice: state.totalPrice,
+        error: state.error
     }
 };
 
 const MapDispatchToProps = dispatch => {
     return {
-        addIngredientHandler: (ingredientType) => dispatch({type: actionType.ADD_INGREDIENT, ingredientType}),
-        removeIngredientHandler: (ingredientType) => dispatch({type: actionType.REMOVE_INGREDIENT, ingredientType})
+        addIngredientHandler: (ingredientType) => dispatch(actions.addIngredient(ingredientType)),
+        removeIngredientHandler: (ingredientType) => dispatch(actions.removeIngredient(ingredientType)),
+        initIngredients: () => dispatch(actions.initIngredients())
     }
 };
 
