@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+
+import * as actions from '../../store/actions/index';
 
 import classes from './Orders.css'
 import Order from '../../components/Order/Order/Order'
@@ -13,29 +16,21 @@ class Orders extends Component {
     }
 
     componentDidMount() {
-        axios.get('https://react-burger-builder-4a2cc-default-rtdb.europe-west1.firebasedatabase.app/orders.json')
-            .then( res => {
-                let fetchedOrders = []
-                for (let key in res.data) {
-                    fetchedOrders.push({
-                        ...res.data[key],
-                        id: key
-                    })
-                }
-                this.setState({loading: false, orders: fetchedOrders})
-            })
-            .catch( err => {
-                this.setState({loading: false})
-            })
+        this.props.onFetchOrders()
     }
 
     render () {
         let orders = <Spinner />;
 
-        if (!this.state.loading) {
-            orders = this.state.orders.map( ig => {
+        if (!this.props.loading) {
+            orders = <p>No orders placed yet. Please make an order first!</p>
+
+            if (this.props.orders.length > 0) {
+               orders = this.props.orders.map( ig => {
                 return <Order key={ig.id} ingredients={ig.ingredients} price={ig.price} />
-            })
+            }) 
+            }
+            
         }
         return(
             <div className={classes}>
@@ -45,4 +40,17 @@ class Orders extends Component {
     }
 };
 
-export default withErrorHandler(Orders, axios);
+const mapStateToPros = state => {
+    return {
+        loading: state.order.loading,
+        orders: state.order.orders
+    }
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onFetchOrders: () => dispatch(actions.fetchOrders())
+    }
+};
+
+export default connect(mapStateToPros, mapDispatchToProps)(withErrorHandler(Orders, axios));
