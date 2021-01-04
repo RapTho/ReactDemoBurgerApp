@@ -17,7 +17,7 @@ const rootReducer = combineReducers({
 });
 
 // Redux devtools requirement
-const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION__ || compose
+const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const store = createStore(rootReducer, composeEnhancer(applyMiddleware(thunk)));
 

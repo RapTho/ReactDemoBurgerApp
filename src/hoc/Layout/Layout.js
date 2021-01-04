@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter } from 'react-router-dom';
+
 
 
 import classes from './Layout.css'
@@ -27,16 +27,14 @@ class Layout extends Component {
     render() {
         return(
             <Aux>
-                <BrowserRouter>
-                    <Toolbar showSideDrawer={this.showSideDrawerHandler}/>
-                    <SideDrawer 
-                        show={this.state.showSideDrawer}
-                        click={this.hideSideDrawerHandler}
-                        />
-                    <main className={classes.Content}>
-                        {this.props.children}
-                    </main>
-                </BrowserRouter>
+                <Toolbar showSideDrawer={this.showSideDrawerHandler}/>
+                <SideDrawer 
+                    show={this.state.showSideDrawer}
+                    click={this.hideSideDrawerHandler}
+                    />
+                <main className={classes.Content}>
+                    {this.props.children}
+                </main>
             </Aux>
         )
     }
