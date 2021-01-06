@@ -13,7 +13,7 @@ The app supports the following features:
 
 Technical optimizations
 - Optimized for mobile use (different designs for mobile/desktop)
-- Lazy loading parts of the app
+- Lazy loading parts of the app<br>
   Not all components are loaded initially. On request, the app fetches the less frequently used components automatically and renders them.
 - Single Page application
 - Store JSON Webtoken in localStorage after a successful login
