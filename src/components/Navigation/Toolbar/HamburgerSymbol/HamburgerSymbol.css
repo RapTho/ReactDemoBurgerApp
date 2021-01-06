@@ -8,3 +8,9 @@
 .HamburgerSymbol img {
   height: 100%;
 }
+
+@media (min-width: 500px) {
+  .HamburgerSymbol {
+    display: none;
+  }
+}

@@ -11,7 +11,7 @@ import Spinner from '../../components/UI/Spinner/Spinner';
 import axios from '../../axios-burger';
 import * as actions from '../../store/actions/index';
 
-class BurgerBuilder extends Component {
+export class BurgerBuilder extends Component {
     state = {
         purchasing: false
     }
@@ -29,7 +29,12 @@ class BurgerBuilder extends Component {
     }
 
     updatePurchasingHandler = () => {
-        this.setState({ purchasing: true })
+        if (this.props.isAuth) {
+            this.setState({ purchasing: true })
+        } else {
+            this.props.onSetAuthRedirectPath("/checkout");
+            this.props.history.push("/auth");
+        }
     }
 
     cancelPurchasingHandler = () => {
@@ -61,6 +66,7 @@ class BurgerBuilder extends Component {
                         disabledInfo={disabledInfo}
                         purchasing={this.updatePurchasingHandler}
                         purchasable={this.updatePurchasableHandler()}
+                        isAuth={this.props.isAuth}
                     />
                 </Aux>
             );
@@ -88,7 +94,8 @@ const mapStateToProps = state => {
     return {
         ingredients: state.burgerBuilder.ingredients,
         totalPrice: state.burgerBuilder.totalPrice,
-        error: state.burgerBuilder.error
+        error: state.burgerBuilder.error,
+        isAuth: state.auth.token !== null
     }
 };
 
@@ -97,7 +104,8 @@ const mapDispatchToProps = dispatch => {
         addIngredientHandler: (ingredientType) => dispatch(actions.addIngredient(ingredientType)),
         removeIngredientHandler: (ingredientType) => dispatch(actions.removeIngredient(ingredientType)),
         initIngredients: () => dispatch(actions.initIngredients()),
-        onPurchaseBurgerInit: () => dispatch(actions.purchaseBurgerInit())
+        onPurchaseBurgerInit: () => dispatch(actions.purchaseBurgerInit()),
+        onSetAuthRedirectPath: (path) => dispatch(actions.setAuthRedirectPath(path))
     }
 };
 

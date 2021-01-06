@@ -5,7 +5,7 @@ import Logo from '../../Logo/Logo';
 import HamburgerSymbol from '../Toolbar/HamburgerSymbol/HamburgerSymbol';
 import NavicationItems from '../NavigationItems/NavigationItems';
 
-const toolbar = ( props ) => {
+const toolbar = (props) => {
     return(
         <header className={classes.Toolbar}>
             <HamburgerSymbol click={props.showSideDrawer} />
@@ -13,7 +13,7 @@ const toolbar = ( props ) => {
                 <Logo />
             </div>
             <nav className={classes.DesktopOnly}>
-                <NavicationItems />
+                <NavicationItems isAuthenticated={props.isAuth}/>
             </nav>
         </header>
     )

@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import classes from './ContactData.css'
-import Button from '../../components/UI/Button/Button'
-import Spinner from '../../components/UI/Spinner/Spinner'
-import Input from '../../components/UI/Input/Input'
+import classes from './ContactData.css';
+import Button from '../../components/UI/Button/Button';
+import Spinner from '../../components/UI/Spinner/Spinner';
+import Input from '../../components/UI/Input/Input';
 import axios from '../../axios-burger';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import * as actions from '../../store/actions/index';
-import order from '../../components/Order/Order/Order';
+import { updateObject, checkValidity } from '../../shared/utility';
 
 class ContactData extends Component {
     state = {
@@ -105,27 +105,6 @@ class ContactData extends Component {
         formIsValid: false
     }
 
-
-    checkValidity = (value, rules) => {
-        let isValid = true;
-
-        if (!rules) {
-            return true;
-        }
-
-        if (rules.required) {
-            isValid = value.trim() !== '' && isValid
-        }
-        if (rules.minLength) {
-            isValid = value.length >= rules.minLength && isValid
-        }
-        if (rules.maxLength) {
-            isValid = value.length <= rules.maxLength && isValid
-        }
-
-        return isValid;
-    }
-
     checkFormValidity = () => {
         let formIsValid = true;
 
@@ -147,23 +126,22 @@ class ContactData extends Component {
         const order = {
             ingredients: this.props.ingredients,
             price: +this.props.price.toFixed(2),
-            contact: formData
+            contact: formData,
+            userId: this.props.userId
         };
 
-        this.props.onBurgerHandler(order)
+        this.props.onBurgerHandler(order, this.props.token)
     }
 
     changeHandler = (id, event) => {
-        const updatedOrderForm = {
-            ...this.state.orderForm
-        };
-        const updatedElement = {
-            ...this.state.orderForm[id]
-        };
-        updatedElement.value = event.target.value;
-        updatedElement.valid = this.checkValidity(updatedElement.value, updatedElement.validation)
-        updatedElement.touched = true
-        updatedOrderForm[id] = updatedElement;
+        const updatedElement = updateObject(this.state.orderForm[id], {
+            value:  event.target.value,
+            valid: checkValidity(event.target.value, this.state.orderForm[id].validation),
+            touched: true
+        });
+        const updatedOrderForm = updateObject(this.state.orderForm, {
+            [id]: updatedElement
+        });
         let formIsValid = this.checkFormValidity();
 
         this.setState({ orderForm: updatedOrderForm, formIsValid })
@@ -197,7 +175,7 @@ class ContactData extends Component {
         if (this.props.loading) {
             form = <Spinner />
         }
-        return(
+        return (
             <div className={classes.ContactData}>
                 <h4>Please enter your contact data</h4>
                 {form}
@@ -210,13 +188,15 @@ const mapStateToProps = state => {
     return {
         ingredients: state.burgerBuilder.ingredients,
         price: state.burgerBuilder.totalPrice,
-        loading: state.order.loading
+        loading: state.order.loading,
+        token: state.auth.token,
+        userId: state.auth.userId
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        onBurgerHandler: (orderData) => dispatch(actions.purchaseBurger(orderData))
+        onBurgerHandler: (orderData, token) => dispatch(actions.purchaseBurger(orderData, token))
     }
 };
 
