@@ -2,7 +2,7 @@ This is a small demo project to practice the React JavaScript framework.
 
 Find the app here: https://react-burger-builder-4a2cc.web.app/[https://react-burger-builder-4a2cc.web.app/]
 
-![App preview](https://github.com/RapTho/ReactDemoBurgerApp/blob/main/readme_Image.jpg)
+![App preview](https://github.com/RapTho/ReactDemoBurgerApp/blob/main/readme_image.jpg)
 
 The app supports the following features:
 - Sign up / Login users
