@@ -5,7 +5,7 @@ import classes from './Control.css';
 const control = (props) => {
     return (
         <div className={classes.Control}>
-            <div>{props.label}</div>
+            <div className={classes.Label}>{props.label}</div>
             <button 
                 className={classes.Less} 
                 onClick={props.remove}
