@@ -20,3 +20,5 @@ Technical optimizations
 - Try to automatically authenticate users if a valid token is stored in localStorage
 - Orders only visible once signed in
 - User can only fetch his/her specific orders
+
+Learned all of this in an excellent Udemy course: https://www.udemy.com/course/react-the-complete-guide-incl-redux/
