@@ -7,7 +7,7 @@ Find the app here: https://react-burger-builder-4a2cc.web.app/
 The app supports the following features:
 - Sign up / Login users
 - Logout
-- Bulid and order (store on DB) burgers
+- Build and order (store on DB) burgers
 - Provide an order summary including the ingredients and a calculated price
 - Show users past orders when signed in
 
