@@ -15,7 +15,7 @@ export default (httpClient) => {
     }
   );
 
-  // = Component did mount (after rendering)
+  // = ComponentDidMount (after rendering)
   useEffect(() => {
     httpClient.interceptors.request.eject(reqInterceptor);
     httpClient.interceptors.response.eject(resInterceptor);
