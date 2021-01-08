@@ -1,51 +1,42 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, { useState } from "react";
+import { connect } from "react-redux";
 
-import classes from './Layout.css'
-import Aux from '../Auxiliary/Auxiliary';
-import Toolbar from '../../components/Navigation/Toolbar/Toolbar';
-import SideDrawer from '../../components/Navigation/SideDrawer/SideDrawer';
+import classes from "./Layout.css";
+import Aux from "../Auxiliary/Auxiliary";
+import Toolbar from "../../components/Navigation/Toolbar/Toolbar";
+import SideDrawer from "../../components/Navigation/SideDrawer/SideDrawer";
 
-class Layout extends Component {
-    state = {
-        showSideDrawer: false
-    }
+const layout = (props) => {
+  const [isSideDrawerVisible, setIsSideDrawerVisible] = useState(false);
 
-    hideSideDrawerHandler = () => {
-        this.setState({
-            showSideDrawer: false
-        })
-    }
-    
-    showSideDrawerHandler = () => {
-        this.setState({
-            showSideDrawer: true
-        })
-    }
+  const hideSideDrawerHandler = () => {
+    setIsSideDrawerVisible(false);
+  };
 
-    render() {
-        return(
-            <Aux>
-                <Toolbar 
-                    showSideDrawer={this.showSideDrawerHandler} 
-                    isAuth={this.props.isAuthenticated}/>
-                <SideDrawer 
-                    show={this.state.showSideDrawer}
-                    click={this.hideSideDrawerHandler}
-                    isAuth={this.props.isAuthenticated}/>
-                <main className={classes.Content}>
-                    {this.props.children}
-                </main>
-            </Aux>
-        )
-    }
-    
-}
+  const showSideDrawerHandler = () => {
+    setIsSideDrawerVisible(!isSideDrawerVisible);
+  };
 
-const mapStateToPros = state => {
-    return {
-        isAuthenticated: state.auth.token !== null
-    };
+  return (
+    <Aux>
+      <Toolbar
+        showSideDrawer={showSideDrawerHandler}
+        isAuth={props.isAuthenticated}
+      />
+      <SideDrawer
+        show={isSideDrawerVisible}
+        click={hideSideDrawerHandler}
+        isAuth={props.isAuthenticated}
+      />
+      <main className={classes.Content}>{props.children}</main>
+    </Aux>
+  );
 };
 
-export default connect(mapStateToPros)(Layout);
+const mapStateToPros = (state) => {
+  return {
+    isAuthenticated: state.auth.token !== null,
+  };
+};
+
+export default connect(mapStateToPros)(layout);
